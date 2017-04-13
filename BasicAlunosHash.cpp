@@ -29,8 +29,21 @@ void AlunosHash::retrieveItem(Aluno& aluno, bool& found)
 void AlunosHash::insertItem(Aluno aluno)
 {
   int location = aluno.Hash();
-  cadastro[location] = aluno;
-  length++;
+  bool isColision = cadastro[location].getRa() != -1 && cadastro[location].getNome() != "";
+
+  if(!isColision){
+    cadastro[location] = aluno;
+    length++;
+  }else{
+    while(isColision){
+      location++;
+      if(cadastro[location].getRa() == -1 && cadastro[location].getNome() == ""){
+        cadastro[location] = aluno;
+        length++;
+        isColision = false;
+      }
+    }
+  }
 }
 
 void AlunosHash::deleteItem(Aluno aluno)
